@@ -214,17 +214,71 @@ async function loadDashboard(adapter, options = {}) {
   });
   container.appendChild(wrapper);
 
+  // Matrix rain canvas
+  if (config.dashboard?.matrixRain !== false) {
+    const rain = document.createElement("canvas");
+    rain.className = "jarvis-matrix-rain";
+    rain.setAttribute("aria-hidden", "true");
+    wrapper.appendChild(rain);
+    const rainCtx = rain.getContext("2d");
+    const glyphs = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let columns = [];
+    let frame = 0;
+    let running = true;
+    const resizeRain = () => {
+      const scale = Math.min(window.devicePixelRatio || 1, 2);
+      rain.width = Math.floor(wrapper.clientWidth * scale);
+      rain.height = Math.floor(wrapper.clientHeight * scale);
+      rain.style.width = "100%";
+      rain.style.height = "100%";
+      rainCtx.setTransform(scale, 0, 0, scale, 0, 0);
+      columns = Array.from({ length: Math.ceil(wrapper.clientWidth / 18) }, () => Math.random() * -40);
+    };
+    const drawRain = () => {
+      if (!running) return;
+      const width = wrapper.clientWidth;
+      const height = wrapper.clientHeight;
+      rainCtx.fillStyle = "rgba(2, 6, 4, 0.12)";
+      rainCtx.fillRect(0, 0, width, height);
+      rainCtx.font = "12px monospace";
+      columns.forEach((y, index) => {
+        const x = index * 18;
+        rainCtx.fillStyle = index % 7 === 0 ? "rgba(190, 255, 210, 0.42)" : "rgba(0, 255, 102, 0.22)";
+        rainCtx.fillText(glyphs[Math.floor(Math.random() * glyphs.length)], x, y * 18);
+        columns[index] = y > height / 18 && Math.random() > 0.975 ? 0 : y + 0.55;
+      });
+      frame = requestAnimationFrame(drawRain);
+    };
+    resizeRain();
+    drawRain();
+    const rainResize = new ResizeObserver(resizeRain);
+    rainResize.observe(wrapper);
+    ctx.cleanups.push(() => { running = false; cancelAnimationFrame(frame); rainResize.disconnect(); });
+  }
+
   // Scan line overlay
   if (config.dashboard?.showScanLine !== false) {
     wrapper.appendChild(el("div", {
       position: "absolute",
       left: "0", width: "100%", height: "6%",
-      background: "linear-gradient(180deg, transparent, rgba(0,212,255,0.04), transparent)",
+      background: "linear-gradient(180deg, transparent, rgba(0,255,102,0.04), transparent)",
       pointerEvents: "none", zIndex: "1",
       animation: animationsEnabled ? "jarvisScanLine 8s linear infinite" : "none",
       willChange: animationsEnabled ? "top" : "auto",
       /* contain: "layout style", — disabled: clips hover animations in Tauri */
     }));
+  }
+
+  // Optional user plugins. Each module receives the normal ctx and may return an HTMLElement.
+  const pluginPaths = config.integrations?.plugins || [];
+  for (const pluginPath of pluginPaths) {
+    if (typeof pluginPath !== "string" || !pluginPath) continue;
+    try {
+      const plugin = await (await loadModule(pluginPath))(ctx);
+      if (typeof HTMLElement !== "undefined" && plugin instanceof HTMLElement) wrapper.appendChild(plugin);
+    } catch (error) {
+      console.warn(`[JARVIS] Plugin failed to load: ${pluginPath}`, error);
+    }
   }
 
   // ── 6. Render widgets ──
@@ -259,6 +313,10 @@ async function loadDashboard(adapter, options = {}) {
 
     const voiceWidget = await (await loadModule("widgets/voice-command/mobile.js"))(ctx);
     wrapper.appendChild(voiceWidget);
+    const mobileAddons = await (await loadModule("widgets/mobile-addons.js"))(ctx);
+    wrapper.appendChild(mobileAddons);
+    const fullstackAddons = await (await loadModule("widgets/fullstack-addons.js"))(ctx);
+    wrapper.appendChild(fullstackAddons);
   } else {
     // Full: render all widgets per layout config
     const WIDGET_MAP = {

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020604">
+  <title>JARVIS // ChromeOS</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 320px; min-height: 100%; background: #020604; }
+    body { overflow-x: hidden; font-family: "Cascadia Code", "Fira Code", monospace; -webkit-font-smoothing: antialiased; }
+    #dashboard { min-height: 100vh; }
+    #loading { min-height: 100vh; display: grid; place-content: center; gap: 12px; padding: 24px; color: #00ff66; text-align: center; letter-spacing: 3px; }
+    #loading .detail { max-width: 760px; color: #70a985; font-size: 11px; letter-spacing: 0; line-height: 1.6; overflow-wrap: anywhere; }
+    #loading.hidden { display: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <div id="loading"><strong>JARVIS // CHROMEOS</strong><span>CONNECTING TO COMPANION...</span></div>
+  <div id="dashboard"></div>
+  <script>window.__jarvisBrowser = true;</script>
+  <script src="../shared/bridge/browser-adapter.js"></script>
+  <script src="chromeos-bootstrap.js"></script>
+  <script src="../shared/loader.js"></script>
+  <script>
+    window.__chromeosBootstrap().catch(function (error) {
+      var loading = document.getElementById("loading");
+      loading.classList.remove("hidden");
+      loading.innerHTML = "<strong>SYSTEM ERROR</strong><span class=\"detail\"></span>";
+      loading.querySelector(".detail").textContent = error.stack || error.message || String(error);
+      console.error("[chromeos] Bootstrap failed:", error);
+    });
+  </script>
+</body>
+</html>

@@ -41,6 +41,8 @@ window.__iosBootstrap = async function () {
     "src/services/session-manager-mobile.js",
     "src/widgets/voice-command/core/session-tabs.js",
     "src/widgets/voice-command/core/project-selector.js",
+    "src/widgets/mobile-addons.js",
+    "src/widgets/fullstack-addons.js",
   ];
 
   for (const file of moduleFiles) {
@@ -55,6 +57,19 @@ window.__iosBootstrap = async function () {
       }
     } catch (err) {
       console.warn("[ios-bootstrap] Failed to load:", file, err);
+    }
+  }
+
+  // Preload configured plugins when the native bundle includes them.
+  let bundledConfig = {};
+  try { bundledConfig = JSON.parse(adapter.readFile("src/config/config.json") || "{}"); } catch {}
+  for (const plugin of bundledConfig.integrations?.plugins || []) {
+    if (typeof plugin !== "string" || preloaded[plugin]) continue;
+    try {
+      const resp = await fetch(plugin);
+      if (resp.ok) adapter.setBundledFile(plugin, await resp.text());
+    } catch (err) {
+      console.warn("[ios-bootstrap] Failed to load plugin:", plugin, err);
     }
   }
 

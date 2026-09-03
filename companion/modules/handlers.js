@@ -23,7 +23,7 @@ function handleAudioStart(msg, conn, pipeline, { companionConfig, networkConfig 
   conn.killPreviousRun();
   conn.restoreSession(msg.sessionId);
   if (msg.projectPath) conn.runner.setProjectPath(msg.projectPath);
-  const ffmpegPath = companionConfig.ffmpegPath || "/opt/homebrew/bin/ffmpeg";
+  const ffmpegPath = companionConfig.ffmpegPath || "ffmpeg";
   const sizeLimit = networkConfig.audioSizeLimit || 10485760;
   conn.audioSession = new AudioSession(msg.format || "mp4", ffmpegPath, sizeLimit);
   console.log(`[JARVIS] Audio session started: format=${msg.format} sampleRate=${msg.sampleRate}`);

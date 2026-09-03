@@ -99,8 +99,8 @@
         Object.assign(toast.style, {
           position: "fixed", bottom: "env(safe-area-inset-bottom, 24px)",
           left: "50%", transform: "translateX(-50%)",
-          background: "#1a1a2e", color: "#e0e6ed", padding: "10px 20px",
-          borderRadius: "8px", border: "1px solid rgba(0,212,255,0.3)",
+          background: "#07110b", color: "#00ff66", padding: "10px 20px",
+          borderRadius: "8px", border: "1px solid rgba(0,255,102,0.3)",
           fontSize: "13px", zIndex: "10000", opacity: "0",
           transition: "opacity 0.3s",
         });

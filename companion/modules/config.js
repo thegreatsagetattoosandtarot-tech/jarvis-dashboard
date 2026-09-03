@@ -63,6 +63,8 @@ function loadConfig(basePath) {
 
   return Object.freeze({
     raw: config,
+    configPath,
+    localConfigPath,
     networkConfig,
     companionConfig,
     voiceConfig,

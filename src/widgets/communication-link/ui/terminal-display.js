@@ -77,7 +77,7 @@ function createTerminalDisplay(onLaunch) {
     display: "inline-flex", alignItems: "center", justifyContent: "center",
     gap: "10px", padding: isNarrow ? "12px 24px" : "14px 40px",
     border: `1px solid ${T.accent}55`, borderRadius: "8px",
-    background: "rgba(0, 212, 255, 0.06)",
+    background: "rgba(0, 255, 102, 0.06)",
     cursor: "pointer", transition: "all 0.3s ease",
     width: "100%", maxWidth: "400px", boxSizing: "border-box",
   });
@@ -92,15 +92,15 @@ function createTerminalDisplay(onLaunch) {
   }, "Launch Terminal"));
 
   addHoverEffect(launchBtn, {
-    boxShadow: `0 0 20px ${T.accentDim}, 0 0 40px rgba(0,212,255,0.1)`,
+    boxShadow: `0 0 20px ${T.accentDim}, 0 0 40px rgba(0,255,102,0.1)`,
     borderColor: T.accent + "88",
     transform: "scale(1.02)",
-    background: "rgba(0, 212, 255, 0.1)",
+    background: "rgba(0, 255, 102, 0.1)",
   }, {
     boxShadow: "none",
     borderColor: T.accent + "55",
     transform: "scale(1)",
-    background: "rgba(0, 212, 255, 0.06)",
+    background: "rgba(0, 255, 102, 0.06)",
   });
 
   launchBtn.addEventListener("click", onLaunch);

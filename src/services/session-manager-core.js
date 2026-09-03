@@ -9,8 +9,8 @@ const SAVE_DEBOUNCE_MS = 500;
 const projects = config.projects || {};
 const tracked = projects.tracked || [];
 const colorPalette = projects.colorPalette || [
-  "#00d4ff", "#7c6bff", "#44c98f", "#ff6b35", "#f6d365",
-  "#e74c3c", "#56cfe1", "#a259ff", "#3ddc84", "#ff9500"
+  "#00ff66", "#65ffb0", "#00d957", "#b8ff47", "#d7ff80",
+  "#ff5263", "#39ff88", "#18b957", "#8affb8", "#3ddc84"
 ];
 
 // ── Session data model ──

@@ -56,15 +56,17 @@ It runs on **4 platforms** from one shared JavaScript codebase:
 
 ## Roadmap
 
-### Planned Features
-- **GUI Setup Utility** — Interactive installer that walks through config.json creation, certificate generation, and platform selection
-- **Config Editor Integration** — Edit config.json directly from iOS/macOS apps via server API
-- **Linux Server Support** — Run the companion server on Linux (currently macOS only)
-- **Additional Widgets** — Planned widgets for git status, PR tracking, and calendar integration
-- **Plugin System** — Load custom widgets from external files
+### Implemented Add-ons
+- **Config Editor Integration** — Token-authenticated `/config` GET/POST API with field allowlisting
+- **Linux Server Support** — Portable PATH-based `ffmpeg`/`whisper-cli` defaults and `companion/check-linux.sh`
+- **Plugin System** — Opt-in source-relative dashboard modules through `integrations.plugins`
+- **Mobile Add-ons** — Shared Focus Timer, Quick Capture queue, and integration launchers for iOS/ChromeOS
+
+### Optional Integrations
+- **Git status, PR tracking, and calendar cards** can be added as plugins using the standard `ctx` contract and configured data sources. They remain opt-in because repository paths, provider credentials, and calendar URLs are user-specific.
 
 ### Known Limitations
-- Companion server requires macOS (uses `say` command, macOS paths)
+- Server-side Piper/Whisper requires installed Linux executables and model files; macOS `say` remains a macOS-only TTS option
 - whisper-cpp required for voice input (text input always works)
 - Piper TTS currently requires manual model download
 - Obsidian Mobile requires companion server for all features
@@ -73,7 +75,7 @@ It runs on **4 platforms** from one shared JavaScript codebase:
 ## FAQ
 
 **Does it work on Linux?**
-The dashboard JavaScript runs anywhere with a browser. The companion server currently requires macOS for native TTS (`say` command) and path conventions. Linux support is planned.
+The dashboard JavaScript runs anywhere with a browser. The companion supports Linux with PATH-based `ffmpeg` and `whisper-cli`; macOS `say` remains available only on macOS.
 
 **Is any data sent externally?**
 No. All processing is local. Voice audio is processed by local whisper-cpp. TTS uses local Piper or macOS Say. Claude Code runs locally via CLI. The only network traffic is between your devices over your local network (or Tailscale VPN).

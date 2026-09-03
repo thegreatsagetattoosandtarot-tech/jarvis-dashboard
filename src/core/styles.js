@@ -37,8 +37,8 @@ const oneShotKeyframes = `
 // ── Infinite animations — full or single-frame depending on config ──
 const infiniteKeyframes = animEnabled ? `
   @keyframes jarvisGlow {
-    0%, 100% { text-shadow: 0 0 10px rgba(0,212,255,0.4), 0 0 30px rgba(0,212,255,0.2), 0 0 60px rgba(0,212,255,0.1); }
-    50%      { text-shadow: 0 0 20px rgba(0,212,255,0.8), 0 0 50px rgba(0,212,255,0.4), 0 0 90px rgba(0,212,255,0.2); }
+    0%, 100% { text-shadow: 0 0 10px rgba(0,255,102,0.4), 0 0 30px rgba(0,255,102,0.2), 0 0 60px rgba(0,255,102,0.1); }
+    50%      { text-shadow: 0 0 20px rgba(0,255,102,0.8), 0 0 50px rgba(0,255,102,0.4), 0 0 90px rgba(0,255,102,0.2); }
   }
   @keyframes jarvisScanLine {
     0%   { top: -8%; }
@@ -109,12 +109,12 @@ const infiniteKeyframes = animEnabled ? `
     50%      { opacity: 0.9; }
   }
   @keyframes jarvisOptionSelected {
-    0%, 100% { border-left-color: rgba(0,212,255,0.4); }
-    50%      { border-left-color: rgba(0,212,255,0.8); }
+    0%, 100% { border-left-color: rgba(0,255,102,0.4); }
+    50%      { border-left-color: rgba(0,255,102,0.8); }
   }
 ` : `
   /* Animations disabled — static single-frame fallbacks */
-  @keyframes jarvisGlow { 0%, 100% { text-shadow: 0 0 10px rgba(0,212,255,0.4), 0 0 30px rgba(0,212,255,0.2); } }
+  @keyframes jarvisGlow { 0%, 100% { text-shadow: 0 0 10px rgba(0,255,102,0.4), 0 0 30px rgba(0,255,102,0.2); } }
   @keyframes jarvisScanLine { 0% { top: -8%; } 100% { top: -8%; } }
   @keyframes jarvisPulse { 0%, 100% { opacity: 1; transform: scale(1); } }
   @keyframes jarvisBreathing { 0%, 100% { transform: scale(1); } }
@@ -132,12 +132,24 @@ const infiniteKeyframes = animEnabled ? `
   @keyframes jarvisOrbitDotLarge { 0%, 100% { transform: rotate(0deg) translateX(34px) rotate(0deg); } }
   @keyframes jarvisGlowPulse { 0%, 100% { opacity: 0.6; } }
   @keyframes jarvisSubmitPulse { 0%, 100% { opacity: 0.7; } }
-  @keyframes jarvisOptionSelected { 0%, 100% { border-left-color: rgba(0,212,255,0.4); } }
+  @keyframes jarvisOptionSelected { 0%, 100% { border-left-color: rgba(0,255,102,0.4); } }
 `;
 
 styleEl.textContent = `
   ${oneShotKeyframes}
   ${infiniteKeyframes}
+
+  /* ── Matrix Rain Canvas ── */
+  .jarvis-matrix-rain {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.34;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
 
   /* ── Background pause — stops all animations when tab is hidden ── */
   .jarvis-bg-paused * {
@@ -148,17 +160,17 @@ styleEl.textContent = `
   .jarvis-code-block {
     margin: 8px 0;
     border-radius: 8px;
-    border: 1px solid rgba(0, 212, 255, 0.12);
+    border: 1px solid rgba(0, 255, 102, 0.12);
     overflow: hidden;
-    background: #080c14;
+    background: #020b06;
   }
   .jarvis-code-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 4px 12px;
-    background: rgba(0, 212, 255, 0.05);
-    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+    background: rgba(0, 255, 102, 0.05);
+    border-bottom: 1px solid rgba(0, 255, 102, 0.08);
     font-size: 10px;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -194,7 +206,7 @@ styleEl.textContent = `
     height: 4px;
   }
   .jarvis-code-pre::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.2);
+    background: rgba(0, 255, 102, 0.2);
     border-radius: 2px;
   }
   .jarvis-code-pre::-webkit-scrollbar-track {
@@ -214,7 +226,7 @@ styleEl.textContent = `
     width: 4px;
   }
   .jarvis-project-dropdown::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.2);
+    background: rgba(0, 255, 102, 0.2);
     border-radius: 2px;
   }
   .jarvis-project-dropdown::-webkit-scrollbar-track {
@@ -228,7 +240,7 @@ styleEl.textContent = `
     gap: 0;
     overflow-x: auto;
     overflow-y: hidden;
-    border-top: 1px solid rgba(0, 212, 255, 0.08);
+    border-top: 1px solid rgba(0, 255, 102, 0.08);
     background: rgba(0, 0, 0, 0.2);
     min-height: 34px;
   }
@@ -236,7 +248,7 @@ styleEl.textContent = `
     height: 2px;
   }
   .jarvis-tab-bar::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.15);
+    background: rgba(0, 255, 102, 0.15);
     border-radius: 1px;
   }
   .jarvis-tab-bar::-webkit-scrollbar-track {
@@ -256,7 +268,7 @@ styleEl.textContent = `
     letter-spacing: 0.5px;
     font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
     border-bottom: 2px solid transparent;
-    border-right: 1px solid rgba(0, 212, 255, 0.06);
+    border-right: 1px solid rgba(0, 255, 102, 0.06);
     transition: all 0.15s ease;
     position: relative;
     flex-shrink: 0;
@@ -268,7 +280,7 @@ styleEl.textContent = `
     background: rgba(255, 255, 255, 0.03);
   }
   .jarvis-tab[data-active="true"] {
-    background: rgba(0, 212, 255, 0.06);
+    background: rgba(0, 255, 102, 0.06);
   }
   .jarvis-tab .jarvis-tab-close {
     opacity: 0;
@@ -291,7 +303,7 @@ styleEl.textContent = `
   /* ── Drag & drop ── */
   .jarvis-tab[draggable="true"] { cursor: grab; }
   .jarvis-tab.jarvis-dragging { opacity: 0.4; cursor: grabbing; }
-  .jarvis-tab.jarvis-drag-over { border-left: 2px solid rgba(0, 212, 255, 0.6); }
+  .jarvis-tab.jarvis-drag-over { border-left: 2px solid rgba(0, 255, 102, 0.6); }
 
   /* ── Tab notification badge ── */
   .jarvis-tab-badge {

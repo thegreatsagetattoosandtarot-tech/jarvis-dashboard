@@ -365,12 +365,12 @@ function buildCodeBlock(code, lang) {
   const wrapper = document.createElement("div");
   wrapper.className = "jarvis-code-block";
   // Inline styles (CSS classes unreliable in Tauri WKWebView)
-  wrapper.style.cssText = "margin:8px 0;border-radius:8px;border:1px solid rgba(0,212,255,0.12);overflow:hidden;background:#080c14;";
+  wrapper.style.cssText = "margin:8px 0;border-radius:8px;border:1px solid rgba(0,255,102,0.12);overflow:hidden;background:#020b06;";
 
   // Header with language + copy
   const header = document.createElement("div");
   header.className = "jarvis-code-header";
-  header.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:4px 12px;background:rgba(0,212,255,0.05);border-bottom:1px solid rgba(0,212,255,0.08);font-size:10px;letter-spacing:1px;text-transform:uppercase;";
+  header.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:4px 12px;background:rgba(0,255,102,0.05);border-bottom:1px solid rgba(0,255,102,0.08);font-size:10px;letter-spacing:1px;text-transform:uppercase;";
 
   const langLabel = document.createElement("span");
   langLabel.textContent = lang || "code";
@@ -526,11 +526,11 @@ function createStreamRenderer(container) {
     // Create live code block DOM (inline styles for Tauri WKWebView compatibility)
     codeBlockEl = document.createElement("div");
     codeBlockEl.className = "jarvis-code-block";
-    codeBlockEl.style.cssText = "margin:8px 0;border-radius:8px;border:1px solid rgba(0,212,255,0.12);overflow:hidden;background:#080c14;";
+    codeBlockEl.style.cssText = "margin:8px 0;border-radius:8px;border:1px solid rgba(0,255,102,0.12);overflow:hidden;background:#020b06;";
 
     const header = document.createElement("div");
     header.className = "jarvis-code-header";
-    header.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:4px 12px;background:rgba(0,212,255,0.05);border-bottom:1px solid rgba(0,212,255,0.08);font-size:10px;letter-spacing:1px;text-transform:uppercase;";
+    header.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:4px 12px;background:rgba(0,255,102,0.05);border-bottom:1px solid rgba(0,255,102,0.08);font-size:10px;letter-spacing:1px;text-transform:uppercase;";
     const langLabel = document.createElement("span");
     langLabel.textContent = lang || "code";
     langLabel.style.color = T.textMuted;

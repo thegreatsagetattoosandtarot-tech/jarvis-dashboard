@@ -26,6 +26,19 @@ Top-level dashboard settings.
 | `showScanLine` | boolean | `false` | Show animated scan line overlay |
 | `statusText` | string | `"System Online"` | Status text in header |
 
+## `integrations`
+
+Optional integrations are additive and disabled unless explicitly enabled.
+
+| Key | Type | Default | Description |
+|---|---|---|---|
+| `plugins` | array | `[]` | Source-relative module paths loaded with the normal dashboard `ctx`; a plugin may return an HTMLElement. |
+| `signalBus.enabled` | boolean | `false` | Publish voice state files for compatible visualizers. |
+| `signalBus.dir` | string | `""` | Directory receiving `.voice_state` and `.voice_waveform`. |
+| `mobileAddons.enabled` | boolean | `true` | Show the shared iOS/ChromeOS timer, capture queue, and integration links. |
+
+The companion server exposes token-authenticated `GET /config` and `POST /config` endpoints. Send the token in the `X-JARVIS-Token` header. POST updates are limited to dashboard, theme, layout, integrations, widgets, performance, pricing, language, and projects, and require a server restart.
+
 ## `theme`
 
 15 color values that control the entire dashboard appearance.

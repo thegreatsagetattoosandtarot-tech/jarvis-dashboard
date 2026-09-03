@@ -7,8 +7,8 @@ const fs = require("fs");
 
 class Transcriber {
   constructor(config) {
-    this._whisperPath = config.whisperPath || "/opt/homebrew/bin/whisper-cli";
-    this._modelPath = config.whisperModel || "/opt/homebrew/share/whisper-cpp/ggml-base.en.bin";
+    this._whisperPath = config.whisperPath || "whisper-cli";
+    this._modelPath = this._expandPath(config.whisperModel || "ggml-base.en.bin");
     this._lang = config.whisperLang || "en";
     this._autoDetect = this._lang === "auto";
     this._activeProcess = null;
@@ -22,7 +22,16 @@ class Transcriber {
   }
 
   get isAvailable() {
-    return fs.existsSync(this._whisperPath) && fs.existsSync(this._modelPath);
+    return this._canResolveExecutable(this._whisperPath) && fs.existsSync(this._modelPath);
+  }
+
+  _canResolveExecutable(program) {
+    if (program.includes("/")) return fs.existsSync(program);
+    return process.env.PATH.split(require("path").delimiter).some(dir => fs.existsSync(require("path").join(dir, program)));
+  }
+
+  _expandPath(filePath) {
+    return filePath.startsWith("~/") ? require("path").join(require("os").homedir(), filePath.slice(2)) : filePath;
   }
 
   transcribe(wavPath) {

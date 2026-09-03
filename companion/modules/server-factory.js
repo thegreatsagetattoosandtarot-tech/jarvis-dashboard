@@ -4,6 +4,7 @@
 const http = require("http");
 const https = require("https");
 const os = require("os");
+const fs = require("fs");
 const WebSocket = require("ws");
 
 const Auth = require("./auth");
@@ -26,6 +27,7 @@ function createServer(config) {
     tlsOptions,
     port,
     localPort,
+    localConfigPath,
   } = config;
 
   // Initialize auth
@@ -118,20 +120,70 @@ function createServer(config) {
   }
 
   // Create servers
-  const httpsServer = https.createServer(tlsOptions, (req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("JARVIS Companion Server — Use WebSocket to connect.");
-  });
+  function sendJson(res, status, value) {
+    const body = JSON.stringify(value);
+    res.writeHead(status, { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(body) });
+    res.end(body);
+  }
+
+  function requestToken(req) {
+    const headerToken = req.headers["x-jarvis-token"];
+    if (headerToken) return headerToken;
+    try { return new URL(req.url, "https://localhost").searchParams.get("token"); } catch { return null; }
+  }
+
+  function handleHttpRequest(req, res) {
+    if (req.url === "/" || req.url?.startsWith("/health")) {
+      sendJson(res, 200, { service: "jarvis-companion", status: "ok", websocket: true });
+      return;
+    }
+    if (req.url?.split("?", 1)[0] !== "/config") {
+      sendJson(res, 404, { error: "Not found" });
+      return;
+    }
+    if (!auth.validateToken(requestToken(req))) {
+      sendJson(res, 401, { error: "Unauthorized" });
+      return;
+    }
+    if (req.method === "GET") {
+      const safe = JSON.parse(JSON.stringify(rawConfig));
+      if (safe.network) delete safe.network.token;
+      if (safe.companion) {
+        delete safe.companion.claudePath;
+        delete safe.companion.whisperPath;
+        delete safe.companion.whisperModel;
+      }
+      sendJson(res, 200, safe);
+      return;
+    }
+    if (req.method !== "POST") {
+      sendJson(res, 405, { error: "Use GET or POST" });
+      return;
+    }
+    let body = "";
+    req.on("data", chunk => { body += chunk; if (body.length > 1048576) req.destroy(); });
+    req.on("end", () => {
+      try {
+        const patch = JSON.parse(body);
+        const allowed = ["dashboard", "theme", "layout", "integrations", "widgets", "performance", "pricing", "language", "projects"];
+        const cleanPatch = Object.fromEntries(Object.entries(patch).filter(([key]) => allowed.includes(key)));
+        const current = fs.existsSync(localConfigPath) ? JSON.parse(fs.readFileSync(localConfigPath, "utf8")) : {};
+        fs.writeFileSync(localConfigPath, JSON.stringify({ ...current, ...cleanPatch }, null, 2) + "\n", { mode: 0o600 });
+        sendJson(res, 200, { ok: true, restartRequired: true, updated: Object.keys(cleanPatch) });
+      } catch (error) {
+        sendJson(res, 400, { error: "Invalid configuration JSON" });
+      }
+    });
+  }
+
+  const httpsServer = https.createServer(tlsOptions, handleHttpRequest);
 
   const wss = new WebSocket.Server({
     server: httpsServer,
     verifyClient: makeVerifyClient,
   });
 
-  const httpServer = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("JARVIS Companion Server (local) — Use WebSocket to connect.");
-  });
+  const httpServer = http.createServer(handleHttpRequest);
 
   const wsLocal = new WebSocket.Server({
     server: httpServer,
