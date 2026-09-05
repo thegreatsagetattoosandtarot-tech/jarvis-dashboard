@@ -1,0 +1,1724 @@
+/* JARVIS Face Animations
+   All animations follow the JARVIS visual language:
+   - Cyan accent (#00D4FF) as primary color
+   - Dark theme (#050510, #0A0A1A) as base
+   - Smooth, breathing-style animations
+   - Particle/orbit effects for depth
+*/
+
+/* ── Core Breathing Animation ──
+   Subtle scale pulse for the face base */
+@keyframes jarvisFaceBreathing {
+  0%, 100% {
+    transform: scale(1) translateZ(0);
+    box-shadow: 0 0 30px rgba(0,212,255,0.15), 0 0 60px rgba(0,212,255,0.08), inset 0 0 40px rgba(0,0,0,0.5), inset 0 -10px 30px rgba(0,0,0,0.3);
+  }
+  50% {
+    transform: scale(1.02) translateZ(0);
+    box-shadow: 0 0 40px rgba(0,212,255,0.25), 0 0 80px rgba(0,212,255,0.12), inset 0 0 50px rgba(0,0,0,0.6), inset 0 -15px 40px rgba(0,0,0,0.4);
+  }
+}
+
+/* ── Ambient Pulse ──
+   Slow pulsing outer glow */
+@keyframes jarvisAmbientPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* ── Inner Pulse ──
+   Faster inner glow pulse */
+@keyframes jarvisInnerPulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ── Eye Breathing ──
+   Subtle pupil dilation/contraction */
+@keyframes jarvisEyeBreathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* ── Round Eye Pulse ──
+   Pulse effect for round eyes */
+@keyframes jarvisRoundEyePulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0,212,255,0.33), inset 0 0 15px rgba(0,0,0,0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.66), inset 0 0 30px rgba(0,0,0,0.7);
+  }
+}
+
+/* ── Visor Pulse ──
+   Pulse for visor-style eyes */
+@keyframes jarvisVisorPulse {
+  0%, 100% {
+    background: linear-gradient(90deg, #00D4FF 0%, #00D4FFAA 50%, #00D4FF 100%);
+    box-shadow: 0 0 16px #00D4FF66, 0 0 32px #00D4FF33;
+  }
+  50% {
+    background: linear-gradient(90deg, #00D4FF22 0%, #00D4FF 50%, #00D4FF22 100%);
+    box-shadow: 0 0 24px #00D4FF88, 0 0 48px #00D4FF44;
+  }
+}
+
+/* ── Visor Scan Line ──
+   Moving scan line across visor */
+@keyframes jarvisVisorScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ── Hex Pulse ──
+   Pulse for angular/hex eyes */
+@keyframes jarvisHexPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px #00D4FF44, inset 0 0 20px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #00D4FF22 0%, #00D4FF44 100%);
+  }
+  50% {
+    box-shadow: 0 0 24px #00D4FF88, inset 0 0 40px rgba(0,0,0,0.7);
+    background: linear-gradient(135deg, #00D4FF44 0%, #00D4FF88 100%);
+  }
+}
+
+/* ── Pupil Pulse ──
+   Pupil dilation animation */
+@keyframes jarvisPupilPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.8;
+  }
+}
+
+/* ── Speak Bar Animation ──
+   Animated speaking bars */
+@keyframes jarvisSpeakBar {
+  0%, 100% {
+    height: 20%;
+    opacity: 0.3;
+  }
+  50% {
+    height: 80%;
+    opacity: 1;
+  }
+}
+
+/* ── Speaking Bar Stagger ──
+   Staggered speaking bars with delays */
+@keyframes jarvisSpeakBars {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+/* ── Thinking Dot Animation ──
+   Pulsing thinking dots */
+@keyframes jarvisThinkingDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+}
+
+/* ── Thinking Dot Stagger ──
+   Staggered thinking dots */
+@keyframes jarvisThinkingDots {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+/* ── Brow Raise ──
+   Brow raising animation */
+@keyframes jarvisBrowRaise {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateX(50%) translateY(0) rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(50%) translateY(-4px) rotate(-5deg);
+  }
+}
+
+/* ── Brow Furrow ──
+   Furrowed brow animation */
+@keyframes jarvisBrowFurrow {
+  0%, 100% {
+    opacity: 0.9;
+    transform: translateX(50%) translateY(2px) rotate(8deg);
+    background: linear-gradient(90deg, transparent, #FF000088, transparent);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(50%) translateY(4px) rotate(12deg);
+  }
+}
+
+/* ── Click Ripple ──
+   Ripple effect on face click */
+@keyframes jarvisRipple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.6;
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+
+/* ── Face Fade In ──
+   Initial fade-in animation */
+@keyframes jarvisFaceFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+}
+
+/* ── Eye Scan ──
+   Moving scan line across eyes */
+@keyframes jarvisEyeScan {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0.3;
+  }
+}
+
+/* ── Pupil Size Animation ──
+   For listening state pupil dilation */
+@keyframes jarvisPupilDilation {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* ── Status Pulse ──
+   Pulse animation for status indicators */
+@keyframes jarvisPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+/* ── Orbit Dot Animation ──
+   Orbiting particles around the face */
+@keyframes jarvisOrbitDot {
+  0% {
+    transform: rotate(0deg) translate(0, -80px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, -80px) rotate(-360deg);
+  }
+}
+
+/* ── Orbit Dot Large ──
+   Larger orbiting particles */
+@keyframes jarvisOrbitDotLarge {
+  0% {
+    transform: rotate(0deg) translate(0, -60px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translate(0, -60px) rotate(-360deg);
+  }
+}
+
+/* ── Record Zoom ──
+   Zoom effect during recording */
+@keyframes jarvisRecordZoom {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ── Record Pulse ──
+   Pulse effect during recording */
+@keyframes jarvisRecordPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.5), 0 0 40px rgba(0,212,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.5);
+  }
+}
+
+/* ── Error Shake ──
+   Shake animation for error state */
+@keyframes jarvisErrorShake {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  80% {
+    transform: rotate(10deg);
+  }
+}
+
+/* ── Thinking Shimmer ──
+   Shimmer effect for thinking state */
+@keyframes jarvisThinkingShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ── Language Tag Pulse ──
+   Pulse for language indicator */
+@keyframes jarvisLanguagePulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* ── Connection Pulse ──
+   Pulse for connection indicator */
+@keyframes jarvisConnectionPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0,212,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
+  }
+}
+
+/* ── Mouth Animation ──
+   Animated mouth shapes */
+@keyframes jarvisMouthOpen {
+  0%, 100% {
+    height: 8px;
+    border-color: #00D4FF;
+  }
+  50% {
+    height: 20px;
+    border-color: #00D4FF;
+  }
+}
+
+/* ── Mouth Smile Animation ──
+   Animated smile */
+@keyframes jarvisMouthSmile {
+  0%, 100% {
+    transform: scaleX(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* ── Mouth Frown Animation ──
+   Animated frown */
+@keyframes jarvisMouthFrown {
+  0%, 100% {
+    transform: scaleX(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* ── Jaw Drop ──
+   Jaw drop for speaking */
+@keyframes jarvisJawDrop {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* ── Particle Burst ──
+   Particle burst for state changes */
+@keyframes jarvisParticleBurst {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+/* ── Status Line Pulse ──
+   Pulse for status line */
+@keyframes jarvisStatusPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Voice Wave ──
+   Voice input wave animation */
+@keyframes jarvisVoiceWave {
+  0% {
+    height: 4px;
+    opacity: 0.3;
+  }
+  50% {
+    height: 20px;
+    opacity: 1;
+  }
+  100% {
+    height: 4px;
+    opacity: 0.3;
+  }
+}
+
+/* ── Voice Wave Stagger ──
+   Staggered voice waves */
+@keyframes jarvisVoiceWaves {
+  0% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+}
+
+/* ── Network Pulse ──
+   Network connection pulse */
+@keyframes jarvisNetworkPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0,212,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.6);
+  }
+}
+
+/* ── Server Pulse ──
+   Server status pulse */
+@keyframes jarvisServerPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Voice Muted ──
+   Muted state animation */
+@keyframes jarvisMutedPulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Unmuted ──
+   Unmuted state animation */
+@keyframes jarvisUnmutedPulse {
+  0%, 100% {
+    opacity: 0.8;
+    box-shadow: 0 0 12px rgba(0,212,255,0.5);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 24px rgba(0,212,255,0.8);
+  }
+}
+
+/* ── Focus Ring ──
+   Focus ring animation for interactive elements */
+@keyframes jarvisFocusRing {
+  0% {
+    box-shadow: 0 0 0 2px rgba(0,212,255,0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 4px rgba(0,212,255,0.5);
+  }
+}
+
+/* ── Loading Spin ──
+   Loading spinner animation */
+@keyframes jarvisLoadingSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Session Pulse ──
+   Session active pulse */
+@keyframes jarvisSessionPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(0,212,255,0.4);
+  }
+}
+
+/* ── Voice Command Pulse ──
+   Voice command pulse animation */
+@keyframes jarvisVoiceCommandPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(0,212,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(0,212,255,0.6), 0 0 48px rgba(0,212,255,0.3);
+  }
+}
+
+/* ── Voice Command Record ──
+   Recording pulse animation */
+@keyframes jarvisVoiceRecordPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(0,212,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
+  }
+}
+
+/* ── Voice Command Zoom ──
+   Zoom animation for voice command */
+@keyframes jarvisVoiceCommandZoom {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ── Voice Command Breathing ──
+   Breathing animation for voice command */
+@keyframes jarvisVoiceBreathing {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(0,212,255,0.2);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(0,212,255,0.4), 0 0 48px rgba(0,212,255,0.2);
+  }
+}
+
+/* ── Voice Command Arc Rotate ──
+   Rotating arc animation */
+@keyframes jarvisArcRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Voice Command Arc Pulse ──
+   Pulsing arc animation */
+@keyframes jarvisArcPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Command Record Pulse ──
+   Recording pulse animation */
+@keyframes jarvisRecordPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.5);
+  }
+}
+
+/* ── Voice Command Zoom Min/Max ──
+   Zoom keyframes for recording */
+@keyframes jarvisZoomIn {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/* ── Zoom Out ──
+   Zoom out animation */
+@keyframes jarvisZoomOut {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ── Status Label Fade ──
+   Fade in/out for status labels */
+@keyframes jarvisStatusFade {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Thinking Label Pulse ──
+   Pulse for thinking status label */
+@keyframes jarvisThinkingLabelPulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* ── Error Border Pulse ──
+   Pulse for error state border */
+@keyframes jarvisErrorBorderPulse {
+  0%, 100% {
+    border-color: #FF0000;
+    box-shadow: 0 0 16px rgba(255,0,0,0.3);
+  }
+  50% {
+    border-color: #FF4444;
+    box-shadow: 0 0 32px rgba(255,0,0,0.5), 0 0 64px rgba(255,0,0,0.3);
+  }
+}
+
+/* ── Success Check ──
+   Success checkmark animation */
+@keyframes jarvisSuccessCheck {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-45deg);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-45deg);
+  }
+}
+
+/* ── Voice Indicator Pulse ──
+   Pulse for voice indicator */
+@keyframes jarvisVoiceIndicatorPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Blink ──
+   Blink animation for voice indicator */
+@keyframes jarvisVoiceIndicatorBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ── Voice Indicator Pulse Blink ──
+   Combined pulse and blink */
+@keyframes jarvisVoicePulseBlink {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* ── Voice Indicator Glow ──
+   Glow animation for voice indicator */
+@keyframes jarvisVoiceGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0,212,255,0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
+  }
+}
+
+/* ── Voice Indicator Spin ──
+   Spin animation for voice indicator */
+@keyframes jarvisVoiceSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Voice Indicator Pulse Spin ──
+   Combined pulse and spin */
+@keyframes jarvisPulseSpin {
+  0%, 100% {
+    transform: rotate(0deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Spin Pulse ──
+   Spin then pulse */
+@keyframes jarvisSpinPulse {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.8;
+  }
+  33% {
+    transform: rotate(120deg);
+    opacity: 1;
+  }
+  66% {
+    transform: rotate(240deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Fade In/Out ──
+   Fade in/out animation */
+@keyframes jarvisFadeInOut {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Fade ──
+   Simple fade animation */
+@keyframes jarvisFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Slide In ──
+   Slide in animation */
+@keyframes jarvisSlideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Slide Out ──
+   Slide out animation */
+@keyframes jarvisSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* ── Voice Indicator Grow ──
+   Grow animation */
+@keyframes jarvisGrow {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Shrink ──
+   Shrink animation */
+@keyframes jarvisShrink {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* ── Voice Indicator Pulse Grow ──
+   Combined pulse and grow */
+@keyframes jarvisPulseGrow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* ── Voice Indicator Grow Pulse ──
+   Grow then pulse */
+@keyframes jarvisGrowPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Shrink ──
+   Pulse then shrink */
+@keyframes jarvisPulseShrink {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow ──
+   Combined spin and grow */
+@keyframes jarvisSpinGrow {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Grow Spin ──
+   Grow then spin */
+@keyframes jarvisGrowSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Shrink Spin ──
+   Combined pulse, shrink, and spin */
+@keyframes jarvisPulseShrinkSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  33% {
+    transform: scale(0.6) rotate(120deg);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(0.6) rotate(240deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Shrink Pulse ──
+   Spin, shrink, then pulse */
+@keyframes jarvisSpinShrinkPulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: rotate(120deg) scale(0.6);
+    opacity: 1;
+  }
+  66% {
+    transform: rotate(240deg) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Shrink Grow ──
+   Pulse, shrink, then grow */
+@keyframes jarvisPulseShrinkGrow {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Grow Shrink Pulse ──
+   Grow, shrink, then pulse */
+@keyframes jarvisGrowShrinkPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Grow Shrink ──
+   Pulse, grow, then shrink */
+@keyframes jarvisPulseGrowShrink {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Shrink Grow Pulse ──
+   Shrink, grow, then pulse */
+@keyframes jarvisShrinkGrowPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Grow Shrink Spin ──
+   Combined pulse, grow, shrink, and spin */
+@keyframes jarvisPulseGrowShrinkSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scale(0.6) rotate(90deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.6) rotate(270deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Shrink ──
+   Spin, grow, then shrink */
+@keyframes jarvisSpinGrowShrink {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: rotate(120deg) scale(1.2);
+    opacity: 1;
+  }
+  66% {
+    transform: rotate(240deg) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Shrink Spin Grow ──
+   Shrink, spin, then grow */
+@keyframes jarvisShrinkSpinGrow {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  33% {
+    transform: scale(0.6) rotate(120deg);
+    opacity: 1;
+  }
+  66% {
+    transform: scale(1.2) rotate(240deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Shrink Grow Spin ──
+   Combined pulse, shrink, grow, and spin */
+@keyframes jarvisPulseShrinkGrowSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(0.6) rotate(72deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.2) rotate(144deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.6) rotate(216deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(288deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Shrink Grow Pulse ──
+   Spin, shrink, grow, then pulse */
+@keyframes jarvisSpinShrinkGrowPulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  20% {
+    transform: rotate(72deg) scale(0.6);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(144deg) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    transform: rotate(216deg) scale(0.6);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Grow Spin Shrink Pulse ──
+   Grow, spin, shrink, then pulse */
+@keyframes jarvisGrowSpinShrinkPulse {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(1.2) rotate(72deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(0.6) rotate(144deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.2) rotate(216deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.6) rotate(288deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink ──
+   Spin, grow, pulse, then shrink */
+@keyframes jarvisSpinGrowPulseShrink {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  20% {
+    transform: rotate(72deg) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(144deg) scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: rotate(216deg) scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Shrink Pulse Grow Spin ──
+   Shrink, pulse, grow, then spin */
+@keyframes jarvisShrinkPulseGrowSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scale(0.6) rotate(90deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.6) rotate(270deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Shrink Grow Spin Reverse ──
+   Reverse combined pulse, shrink, grow, and spin */
+@keyframes jarvisPulseShrinkGrowSpinReverse {
+  0% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(0.6) rotate(288deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.2) rotate(216deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.6) rotate(144deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(72deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink Reverse ──
+   Reverse spin, grow, pulse, then shrink */
+@keyframes jarvisSpinGrowPulseShrinkReverse {
+  0% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+  20% {
+    transform: rotate(288deg) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(216deg) scale(0.6);
+    opacity: 1;
+  }
+  60% {
+    transform: rotate(144deg) scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(72deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Grow Spin Shrink Pulse Reverse ──
+   Reverse grow, spin, shrink, then pulse */
+@keyframes jarvisGrowSpinShrinkPulseReverse {
+  0% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scale(1.2) rotate(324deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.6) rotate(270deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink Grow ──
+   Combined spin, grow, shrink, and grow again */
+@keyframes jarvisSpinGrowShrinkGrow {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: rotate(90deg) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(180deg) scale(0.6);
+    opacity: 1;
+  }
+  75% {
+    transform: rotate(270deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink Grow Reverse ──
+   Reverse spin, grow, pulse, shrink, then grow */
+@keyframes jarvisSpinGrowPulseShrinkGrowReverse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  20% {
+    transform: rotate(72deg) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(144deg) scale(0.6);
+    opacity: 1;
+  }
+  60% {
+    transform: rotate(216deg) scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Shrink Grow Spin Grow ──
+   Combined pulse, shrink, grow, spin, and grow */
+@keyframes jarvisPulseShrinkGrowSpinGrow {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(0.6) rotate(72deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.2) rotate(144deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.6) rotate(216deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(288deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Shrink Pulse Grow ──
+   Spin, grow, shrink, pulse, then grow */
+@keyframes jarvisSpinGrowShrinkPulseGrow {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  20% {
+    transform: rotate(72deg) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(144deg) scale(0.6);
+    opacity: 1;
+  }
+  60% {
+    transform: rotate(216deg) scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Grow Pulse Shrink Spin Grow ──
+   Grow, pulse, shrink, spin, then grow */
+@keyframes jarvisGrowPulseShrinkSpinGrow {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(1.2) rotate(72deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(0.6) rotate(144deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.2) rotate(216deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.6) rotate(288deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink Grow Reverse ──
+   Reverse spin, grow, pulse, shrink, then grow */
+@keyframes jarvisSpinGrowPulseShrinkGrowReverse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  20% {
+    transform: rotate(72deg) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(144deg) scale(0.6);
+    opacity: 1;
+  }
+  60% {
+    transform: rotate(216deg) scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Grow Shrink Spin Grow Reverse ──
+   Reverse pulse, shrink, grow, spin, then grow */
+@keyframes jarvisPulseGrowShrinkSpinGrowReverse {
+  0% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(0.6) rotate(288deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.2) rotate(216deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.6) rotate(144deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(72deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink Grow Spin ──
+   Spin, grow, pulse, shrink, grow, then spin */
+@keyframes jarvisSpinGrowPulseShrinkGrowSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  16% {
+    transform: rotate(57.6deg) scale(1.2);
+    opacity: 1;
+  }
+  32% {
+    transform: rotate(115.2deg) scale(0.6);
+    opacity: 1;
+  }
+  48% {
+    transform: rotate(172.8deg) scale(1.2);
+    opacity: 1;
+  }
+  64% {
+    transform: rotate(230.4deg) scale(0.6);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(1.2);
+    opacity: 1;
+  }
+  96% {
+    transform: rotate(345.6deg) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Grow Spin Shrink Pulse Grow Reverse ──
+   Reverse grow, spin, shrink, pulse, then grow */
+@keyframes jarvisGrowSpinShrinkPulseGrowReverse {
+  0% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(1.2) rotate(324deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(0.6) rotate(270deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(90deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Grow Spin Shrink Grow Reverse ──
+   Reverse pulse, grow, shrink, spin, then grow */
+@keyframes jarvisPulseGrowSpinShrinkGrowReverse {
+  0% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(0.6) rotate(288deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.2) rotate(216deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.6) rotate(144deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(72deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Spin Grow Pulse Shrink Grow Spin Reverse ──
+   Reverse spin, grow, pulse, shrink, grow, then spin */
+@keyframes jarvisSpinGrowPulseShrinkGrowSpinReverse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  16% {
+    transform: rotate(57.6deg) scale(1.2);
+    opacity: 1;
+  }
+  32% {
+    transform: rotate(115.2deg) scale(0.6);
+    opacity: 1;
+  }
+  48% {
+    transform: rotate(172.8deg) scale(1.2);
+    opacity: 1;
+  }
+  64% {
+    transform: rotate(230.4deg) scale(0.6);
+    opacity: 1;
+  }
+  80% {
+    transform: rotate(288deg) scale(1.2);
+    opacity: 1;
+  }
+  96% {
+    transform: rotate(345.6deg) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* ── Voice Indicator Pulse Grow Spin Shrink Grow Spin Reverse ──
+   Reverse pulse, grow, shrink, spin, then grow */
+@keyframes jarvisPulseGrowSpinShrinkGrowReverse {
+  0% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.8;
+  }
+  20% {
+    transform: scale(0.6) rotate(288deg);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.2) rotate(216deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.6) rotate(144deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.2) rotate(72deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+}

@@ -164,9 +164,9 @@ function createAgentCard(agent, idx) {
 
     cmdRow.appendChild(el("code", {
       fontSize: "11px", fontFamily: "'SF Mono', 'Fira Code', monospace",
-      color: T.accent, background: "rgba(0,255,102,0.08)",
+      color: T.accent, background: T.accentFaint,
       padding: "2px 8px", borderRadius: "4px",
-      border: "1px solid rgba(0,255,102,0.15)",
+      border: `1px solid ${T.panelBorder}`,
     }, command));
   }
 

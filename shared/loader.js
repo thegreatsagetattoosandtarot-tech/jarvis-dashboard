@@ -121,6 +121,11 @@ async function loadDashboard(adapter, options = {}) {
     cleanups: [],
     _paused: false,
     _adapter: adapter,
+    _pausables: [],
+  };
+
+  ctx.registerPausable = function (startFn, stopFn) {
+    ctx._pausables.push({ start: startFn, stop: stopFn });
   };
 
   // Shared ctx properties (available in all modes)
@@ -144,11 +149,12 @@ async function loadDashboard(adapter, options = {}) {
     ctx.agentCardRefs = new Map();
     ctx.onStatsReady = [];
     ctx.perf = perf;
-    ctx._pausables = [];
-    ctx.registerPausable = function (startFn, stopFn) {
-      ctx._pausables.push({ start: startFn, stop: stopFn });
-    };
   }
+
+  // registerPausable must be available in both modes for matrix rain
+  ctx.registerPausable = function (startFn, stopFn) {
+    ctx._pausables.push({ start: startFn, stop: stopFn });
+  };
 
   // ── 4. Load services ──
   // Session manager core (shared by desktop and mobile managers)
@@ -238,21 +244,27 @@ async function loadDashboard(adapter, options = {}) {
       if (!running) return;
       const width = wrapper.clientWidth;
       const height = wrapper.clientHeight;
-      rainCtx.fillStyle = "rgba(2, 6, 4, 0.12)";
+      rainCtx.fillStyle = T.bg + "22";
       rainCtx.fillRect(0, 0, width, height);
       rainCtx.font = "12px monospace";
       columns.forEach((y, index) => {
         const x = index * 18;
-        rainCtx.fillStyle = index % 7 === 0 ? "rgba(190, 255, 210, 0.42)" : "rgba(0, 255, 102, 0.22)";
+        rainCtx.fillStyle = index % 7 === 0 ? T.gold : T.accent;
+        rainCtx.globalAlpha = index % 7 === 0 ? 0.64 : 0.32;
         rainCtx.fillText(glyphs[Math.floor(Math.random() * glyphs.length)], x, y * 18);
         columns[index] = y > height / 18 && Math.random() > 0.975 ? 0 : y + 0.55;
       });
+      rainCtx.globalAlpha = 1;
       frame = requestAnimationFrame(drawRain);
     };
     resizeRain();
     drawRain();
     const rainResize = new ResizeObserver(resizeRain);
     rainResize.observe(wrapper);
+    ctx.registerPausable(
+      () => { if (!frame) { running = true; frame = requestAnimationFrame(drawRain); } },
+      () => { running = false; cancelAnimationFrame(frame); frame = 0; }
+    );
     ctx.cleanups.push(() => { running = false; cancelAnimationFrame(frame); rainResize.disconnect(); });
   }
 

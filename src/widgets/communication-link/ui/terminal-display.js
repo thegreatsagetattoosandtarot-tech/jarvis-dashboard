@@ -92,10 +92,10 @@ function createTerminalDisplay(onLaunch) {
   }, "Launch Terminal"));
 
   addHoverEffect(launchBtn, {
-    boxShadow: `0 0 20px ${T.accentDim}, 0 0 40px rgba(0,255,102,0.1)`,
+    boxShadow: `0 0 20px ${T.accentDim}, 0 0 40px ${T.accentFaint}`,
     borderColor: T.accent + "88",
     transform: "scale(1.02)",
-    background: "rgba(0, 255, 102, 0.1)",
+    background: T.accentFaint,
   }, {
     boxShadow: "none",
     borderColor: T.accent + "55",

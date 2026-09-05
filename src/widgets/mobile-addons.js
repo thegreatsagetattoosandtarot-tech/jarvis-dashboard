@@ -81,8 +81,8 @@ captureCard.append(captureInput, captureActions);
 grid.appendChild(captureCard);
 
 const links = addonConfig.links || {
-  visualizer: "https://github.com/jaredrhod/ai-visualizer",
-  board: "https://github.com/jaredrhod/barehands",
+  visualizer: "http://127.0.0.1:8790/",
+  board: "http://127.0.0.1:8790/faces/board/index.html",
   memory: "https://github.com/jaredrhod/ai-memory-vault",
 };
 const linkRow = el("div", { display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "10px" });

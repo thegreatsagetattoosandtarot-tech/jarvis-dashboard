@@ -82,7 +82,7 @@ function createSectionTitle(title, options = {}) {
   if (badge) {
     row.appendChild(el("span", {
       fontSize: badge.fontSize || "11px", fontWeight: "600",
-      color: badge.color || T.accent, background: badge.bg || "rgba(0,255,102,0.1)",
+      color: badge.color || T.accent, background: badge.bg || T.accentFaint,
       padding: "2px 10px", borderRadius: "10px", letterSpacing: "1px",
     }, badge.text));
   }

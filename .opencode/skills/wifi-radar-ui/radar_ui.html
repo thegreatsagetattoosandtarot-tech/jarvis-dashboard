@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis WiFi Radar</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #34495e; --accent: #e74c3c; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--primary); color: white; min-height: 100vh; }
+        .header { background: var(--secondary); padding: 1rem 2rem; border-bottom: 4px solid var(--accent); }
+        .header-title { font-size: 1.5rem; font-weight: 300; }
+        .main { padding: 80px 20px 20px 20px; max-width: 1920px; margin: 0 auto; }
+        .radar-container { position: relative; display: inline-block; cursor: crosshair; }
+        #radarCanvas { display: block; border: 2px solid var(--accent); border-radius: 50%; background: radial-gradient(circle at 30% 20%, rgba(231, 76, 60, 0.1), transparent 50%), radial-gradient(circle at 70% 80%, rgba(52, 72, 94, 0.3), transparent 50%); }
+        .status-panel { background: var(--secondary); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; min-height: 120px; }
+        .status-tile { background: var(--dark); border-radius: 6px; padding: 1rem; margin: 0.5rem 0; transition: all 0.3s ease; }
+        .status-tile.active { border-left: 4px solid var(--accent); }
+        .tile-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; margin-bottom: 0.3rem; }
+        .tile-value { font-size: 1.8rem; font-weight: bold; }
+        .controls { background: var(--secondary); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; }
+        .control-group { margin-bottom: 1rem; }
+        .control-label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; color: #bdc3c7; }
+        .control-select, .control-range { width: 100%; padding: 0.5rem; background: var(--dark); border: 1px solid var(--primary); border-radius: 4px; color: white; margin-top: 0.5rem; }
+        .settings-sidebar { position: fixed; right: 0; top: 80px; width: 280px; height: calc(100vh - 80px); background: var(--secondary); border-left: 2px solid var(--primary); padding: 1.5rem; overflow-y: auto; }
+        .settings-section { margin-bottom: 2rem; }
+        .settings-section h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #bdc3c7; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--primary); }
+        .setting-row { margin-bottom: 0.8rem; }
+        .setting-label { display: block; font-size: 0.65rem; margin-bottom: 0.3rem; color: #bdc3c7; }
+        .setting-select, .setting-range { width: 100%; padding: 0.4rem; background: var(--dark); border: 1px solid var(--primary); border-radius: 4px; color: white; }
+        .instructions { background: var(--dark); border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.7rem; line-height: 1.6; }
+        .instructions k { color: var(--accent); }
+        @media (max-width: 768px) { .settings-sidebar { display: none; } main { padding: 80px 10px 20px 10px; } }
+    </style>
+    <script>
+        // WiFi Radar initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            const status = document.createElement('div');
+            status.className = 'status';
+            status.innerHTML = 'WiFi Radar Ready';
+            document.body.appendChild(status);
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-title">Jarvis WiFi Radar</div>
+        <div class="header-subtitle">Privacy-presence human detection via WiFi CSI</div>
+    </header>
+    <main>
+        <div class="radar-container">
+            <canvas id="radarCanvas" width="400" height="400"></canvas>
+        </div>
+        <div class="status-panel" id="statusPanel">
+            <div class="status-tile" id="tileSomeone">
+                <div class="tile-label">Someone</div>
+                <div class="tile-value empty" id="valueSomeone">Empty</div>
+            </div>
+            <div class="status-tile" id="tileMovement">
+                <div class="tile-label">Movement</div>
+                <div class="tile-value empty" id="valueMovement">None</div>
+            </div>
+            <div class="status-tile" id="tileRSSI">
+                <div class="tile-label">RSSI</div>
+                <div class="tile-value" id="valueRSSI">-- dBm</div>
+            </div>
+            <div class="status-tile" id="tileCalibration">
+                <div class="tile-label">Calibration</div>
+                <div class="tile-value" id="valueCalibration">Ready</div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="control-group">
+                <div class="control-label">WiFi Channel</div>
+                <select class="control-select" id="channelSelect">
+                    <option value="1">1 (2.4GHz)</option>
+                    <option value="6" selected>6 (2.4GHz)</option>
+                    <option value="11">11 (2.4GHz)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <div class="control-label">Sensitivity</div>
+                <input type="range" class="control-range" id="sensitivitySlider" min="0" max="100" value="50">
+                <span id="sensitivityValue">50%</span>
+            </div>
+            <div class="control-group">
+                <div class="control-label">Calibration</div>
+                <button class="control-select" id="calibrateBtn" style="width: 100%; padding: 0.5rem; background: #27ae60;">Start Calibration (60s)</button>
+            </div>
+        </div>
+    </main>
+    <div class="settings-sidebar">
+        <div class="settings-section">
+            <h3>Configuration</h3>
+            <div class="setting-row">
+                <span class="setting-label">Someone Timeout</span>
+                <input type="range" class="setting-range" id="timeoutSlider" min="10" max="300" value="60">
+                <span id="timeoutValue">60s</span>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Move Threshold</span>
+                <input type="range" class="setting-range" id="moveThresholdSlider" min="0" max="100" value="15">
+                <span id="moveThresholdValue">15</span>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Filter Window</span>
+                <input type="range" class="setting-range" id="filterWindowSlider" min="1" max="50" value="16">
+                <span id="filterWindowValue">16</span>
+            </div>
+        </div>
+        <div class="settings-section">
+            <h3>About</h3>
+            <div class="instructions">
+                <strong>Jarvis WiFi Radar</strong> uses Channel State Information (CSI) 
+                from ambient WiFi signals to detect human presence and movement.<br>
+                <br>
+                <k>•</k> No cameras, no audio recording<br>
+                <k>•</k> Privacy-preserving RF sensing<br>
+                <k>•</k> Works through walls (NLOS)<br>
+                <k>•</k> Requires 2.4GHz WiFi router
+            </div>
+        </div>
+    </main>
+</body>
+</html>

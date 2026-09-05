@@ -195,7 +195,6 @@ const layout = config.layout || [
   { type: "row", columns: 2, widgets: ["quick-launch", "mission-control"] },
   { type: "system-diagnostics" },
   { type: "activity-analytics" },
-  { type: "recent-activity" },
   { type: "footer" },
 ];
 

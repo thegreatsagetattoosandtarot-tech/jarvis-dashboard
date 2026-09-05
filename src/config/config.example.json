@@ -2,7 +2,8 @@
   "dashboard": {
     "title": "J.A.R.V.I.S.",
     "subtitle": "Just A Rather Very Intelligent System",
-    "showScanLine": false,
+    "showScanLine": true,
+    "matrixRain": true,
     "statusText": "System Online"
   },
   "theme": {
@@ -195,14 +196,14 @@
   "integrations": {
     "plugins": [],
     "signalBus": {
-      "enabled": false,
+      "enabled": true,
       "dir": ""
     },
     "mobileAddons": {
       "enabled": true,
       "links": {
-        "visualizer": "https://github.com/jaredrhod/ai-visualizer",
-        "board": "https://github.com/jaredrhod/barehands",
+        "visualizer": "http://127.0.0.1:8790/",
+        "board": "http://127.0.0.1:8790/faces/board/index.html",
         "memory": "https://github.com/jaredrhod/ai-memory-vault"
       }
     },
